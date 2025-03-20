@@ -196,6 +196,17 @@ header {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+.download-app {
+  text-align: center;
+}
+
+.download-app .app-screenshot {
+  width: 50%; 
+  max-width: 300px; 
+  height: auto;
+  margin-bottom: 10px; 
+}
+
 footer {
   background-color: #000;
   text-align: center;
