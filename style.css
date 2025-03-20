@@ -5,6 +5,7 @@ body {
   background-color: #000;
   color: #fff;
   line-height: 1.6;
+  text-align: center;
 }
 
 header {
@@ -82,6 +83,59 @@ header {
 
 .benefits li {
   margin-bottom: 15px;
+  text-align: left;
+}
+
+.benefits-motoboys {
+  padding: 30px 20px;
+  background-color: #111;
+}
+
+.benefits-motoboys h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
+  font-style: italic;
+}
+
+.benefits-motoboys ul {
+  list-style: none;
+  padding: 0;
+}
+
+.benefits-motoboys li {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.integrations {
+  padding: 30px 20px;
+  background-color: #111;
+}
+
+.integrations h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
+  font-style: italic;
+}
+
+.integrations p {
+  margin-bottom: 15px;
+}
+
+.integrations-logos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.integration-logo {
+  width: 100px;
+  height: auto;
 }
 
 .cta-partner,
@@ -96,6 +150,7 @@ header {
 .cta-partner .cta-text,
 .access-panel .panel-text {
   flex: 1;
+  text-align: center;
 }
 
 .cta-partner .cta-image,
@@ -109,6 +164,11 @@ header {
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
   font-style: italic;
+}
+
+.cta-partner p,
+.access-panel p {
+  text-align: center;
 }
 
 .cta-button,
@@ -144,13 +204,51 @@ footer {
   border-top: 2px solid #e44d26;
 }
 
+.contact {
+  background-color: #000;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(200, 200, 200, 0.5);
+  font-style: italic;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: color 0.3s;
+}
+
+.contact-item:hover {
+  color: #e44d26;
+}
+
+.contact-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 10px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-
   .cta-partner,
   .access-panel {
     flex-direction: column;
-    text-align: center; 
+    text-align: center;
   }
 
   .cta-partner .cta-image,
@@ -160,48 +258,75 @@ footer {
 
   .cta-partner .cta-text,
   .access-panel .panel-text {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
 
   .hero {
-    padding: 30px 10px; 
+    padding: 30px 10px;
   }
 
   .hero h2 {
-    font-size: 2em; 
+    font-size: 2em;
   }
 
   .benefits {
-    padding: 20px 10px; 
+    padding: 20px 10px;
   }
 
   .benefits h2 {
-    font-size: 1.8em; 
+    font-size: 1.8em;
   }
 
   .benefits li {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
+  }
+
+  .contact {
+    padding: 20px 10px;
+  }
+
+  .contact h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  .contact-item {
+    font-size: 1em;
+  }
+
+  .contact-icon {
+    width: 25px;
+    margin-right: 8px;
   }
 }
 
 /* Para telas menores que 480px */
 @media (max-width: 480px) {
   .logo h1 {
-    font-size: 1.5em; 
+    font-size: 1.5em;
   }
 
   .logo p {
-    font-size: 0.9em; 
+    font-size: 0.9em;
   }
 
   .sound-button {
-    padding: 8px 16px; 
-    font-size: 0.9em; 
+    padding: 8px 16px;
+    font-size: 0.9em;
   }
 
   .cta-button,
   .video-button {
-    padding: 8px 16px; 
-    font-size: 0.9em; 
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+  .contact-item {
+    font-size: 0.9em;
+  }
+
+  .contact-icon {
+    width: 20px;
+    margin-right: 5px;
   }
 }
