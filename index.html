@@ -1,156 +1,1337 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aguiar Express Delivery</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" type="module"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-  <script type="importmap">
-    {
-      "imports": {
-        "gsap": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
-      }
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Cardápio Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-  <header>
-    <div class="logo">
-      <img src="logo.webp" alt="Logo" class="logo-image">
-      <h1>Aguiar Express Delivery</h1>
+    <!-- Tela de Splash -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <img src="/placeholder.svg?height=200&width=200" alt="Logo" class="splash-logo">
+            <div class="splash-text">
+                <h1>Paris Burger</h1>
+                <p>Bem-vindo ao nosso cardápio digital</p>
+            </div>
+            <div class="loading-animation">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
     </div>
-    <p>Desde março de 2021</p>
-  </header>
 
-  <section class="hero">
-    <h2>EMPRESA DE TECNOLOGIA E SOLUÇÕES PARA SEU DELIVERY</h2>
-  </section>
+    <!-- Conteúdo Principal (inicialmente oculto) -->
+    <div id="main-content" class="main-content-hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <img id="logo" src="/placeholder.svg?height=60&width=60" alt="Logo" class="logo">
+                    <div class="header-info">
+                        <h1 id="empresa-nome">Carregando...</h1>
+                        <div class="status-container">
+                            <span id="status-funcionamento" class="status"></span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="cart-btn" onclick="toggleCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count" class="cart-count">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-  <section class="benefits">
-    <h2>Benefícios para Empresas</h2>
-    <ul>
-      <li><strong>1. Redução de Custos:</strong> As empresas economizam ao não precisar manter uma frota própria, reduzindo gastos
-        com salários, manutenção de veículos e encargos trabalhistas.</li>
-      <li><strong>2. Atendimento Rápido e Eficiente:</strong> Com uma equipe de motoboys treinados, garantimos entregas ágeis,
-        melhorando a experiência do cliente final.</li>
-      <li><strong>3. Maior Alcance:</strong> A Aguiar Express Delivery atende toda a cidade de Novo Horizonte e pode expandir conforme
-        a demanda, ajudando empresas a alcançarem mais clientes.</li>
-      <li><strong>4. Gestão Simples e Sem Burocracia:</strong> As empresas não precisam se preocupar com a logística das entregas, pois
-        nós cuidamos de tudo, desde a coleta até a entrega final.</li>
-      <li><strong>5. Aumento das Vendas:</strong> Com um serviço de entrega eficiente, os estabelecimentos podem atender mais
-        pedidos e vender mais sem se preocupar com a logística.</li>
-      <li><strong>6. Segurança e Confiabilidade:</strong> Os motoboys passam por treinamentos para garantir um atendimento
-        profissional e seguro, tanto para a empresa quanto para os clientes.</li>
-      <li><strong>7. Parceria Flexível:</strong> Diferentes modalidades de parceria podem ser ajustadas conforme a necessidade do
-        estabelecimento, seja por demanda ou planos de pagamentos pré-pagos.</li>
-    </ul>
-  </section>
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="container">
+                <div id="categorias-nav" class="nav-categories">
+                    <!-- Categorias serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+        </nav>
 
-  <section class="benefits-motoboys">
-    <h2><i>Benefícios para Motoboys</i></h2>
-    <ul>
-      <li><strong>1. Maior volume de entregas:</strong> Como trabalhamos com vários estabelecimentos, os motoboys têm um fluxo
-        constante de entregas.</li>
-      <li><strong>2. Renda atrativa:</strong> Com uma média de 15.000 entregas mensais e um sistema organizado aqui em Novo
-        Horizonte, os motoboys têm uma boa rentabilidade dependendo do seu desempenho.</li>
-      <li><strong>3. Flexibilidade de horário:</strong> Os motoboys podem trabalhar no horário que melhor se encaixa na sua rotina,
-        seja em tempo integral ou apenas como um complemento de renda, acordando em um contrato de prestação de serviços.</li>
-      <li><strong>4. Suporte e treinamento:</strong> Oferecemos treinamento para melhorar a segurança e a eficiência nas entregas,
-        ajudando os motoboys a prestarem um serviço de qualidade e reduzirem riscos no trânsito.</li>
-      <li><strong>5. Fundo de auxílio para acidentes:</strong> Os motoboys que contribuem com R$ 0,10 centavos por entrega têm
-        acesso ao fundo de auxílio em caso de acidente de trabalho, garantindo um suporte financeiro caso precisem se afastar
-        temporariamente.</li>
-      <li><strong>6. Rota otimizada e organização:</strong> Com um sistema eficiente, as entregas são organizadas de forma
-        estratégica para evitar deslocamentos desnecessários, ajudando a economizar tempo e combustível.</li>
-      <li><strong>7. Expansão e oportunidades:</strong> Como a Aguiar Express Delivery planeja crescer para outras cidades, haverá
-        mais oportunidades para os motoboys se destacarem e conquistarem mais entregas.</li>
-    </ul>
-  </section>
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Produtos em Destaque -->
+                <section id="destaques" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Destaques
+                    </h2>
+                    <div id="produtos-destaque" class="products-grid">
+                        <!-- Produtos em destaque serão inseridos aqui -->
+                    </div>
+                </section>
 
-  <section class="integrations">
-    <h2><i>Sistema com mais de 100 integrações</i></h2>
-    <p>Seus pedidos chegam de forma automática pela plataforma conectada ao nosso sistema de entrega onde você não precisa
-      digitar os pedidos.</p>
-    <div class="integrations-logos">
-      <img src="ifoodpng.png" alt="Ifood" class="integration-logo">
-      <img src="anotaailogopng.png" alt="Anota AI" class="integration-logo">
-      <img src="logocardapiowebwebp.webp" alt="Cardapio Web" class="integration-logo">
-      <img src="Saipos_logopng.png" alt="Saipos" class="integration-logo">
-    </div>
-  </section>
+                <!-- Categorias de Produtos -->
+                <div id="categorias-produtos">
+                    <!-- Seções de categorias serão inseridas aqui -->
+                </div>
+            </div>
+        </main>
 
-  <section class="cta-partner">
-    <div class="cta-text">
-      <h2>Criar uma conta de parceria</h2>
-      <p>Se você tem uma empresa que faz entrega e necessita de um sistema para melhorar sua qualidade no atendimento de
-        delivery?</p>
-      <a href="https://aguiarexpress.entregas.io/signup/customer-company" class="cta-button">Clique aqui</a>
-    </div>
-    <div class="cta-image">
-      <img src="paineljpeg.jpeg" alt="Painel de controle">
-    </div>
-  </section>
+        <!-- Carrinho Lateral -->
+        <div id="cart-sidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Seu Pedido</h3>
+                <button class="close-cart" onclick="toggleCart()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Itens do carrinho serão inseridos aqui -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total: R$ <span id="cart-total">0,00</span></strong>
+                </div>
+                <button id="checkout-btn" class="checkout-btn" onclick="finalizarPedido()">
+                    <i class="fab fa-whatsapp"></i>
+                    Finalizar Pedido
+                </button>
+            </div>
+        </div>
 
-  <section class="access-panel">
-    <div class="panel-text">
-      <h2>Acessar o painel de entregas</h2>
-      <p>Para acessar o painel de entregas em sua empresa e poder enviar seus pedidos para os motoboys, ter o rastreamento
-        e monitoramento de entregas.</p>
-      <a href="https://aguiarexpress.entregas.io/u/0/home" class="cta-button">Clique aqui</a>
-    </div>
-    <div class="panel-image">
-      <img src="paineljpeg.jpeg" alt="Painel de entregas">
-    </div>
-  </section>
+        <!-- Overlay -->
+        <div id="overlay" class="overlay" onclick="toggleCart()"></div>
 
-  <section class="download-app">
-    <h2><i>Baixar o Aplicativo de Entregas</i></h2>
-    <p>Para celulares Android. Siga o passo a passo.</p>
-    <div style="text-align: center;">
-      <img src="printpng.jpeg" alt="App Screenshot" class="app-screenshot">
-    </div>
-    <div style="text-align: center;">
-      <a href="https://play.google.com/store/apps/details?id=com.aguiarexpress&pcampaignid=web_share" class="cta-button">Clique aqui</a>
-    </div>
-  </section>
+        <!-- Modal de Produto -->
+        <div id="product-modal" class="modal">
+            <div class="modal-content product-modal-content">
+                <span class="close-modal" onclick="closeProductModal()">&times;</span>
+                <div id="modal-body">
+                    <!-- Conteúdo do modal será inserido aqui -->
+                </div>
+            </div>
+        </div>
 
-    <section class="download-app">
-    <h2><i>Baixar o Aplicativo de Entregas</i></h2>
-    <p>Para celulares IOS, Siga o passo a passo</p>
-    <div style="text-align: center;">
-      <img src="1.png" alt="App Screenshot" class="app-screenshot">
-      <img src="2.png" alt="App Screenshot" class="app-screenshot">
-    </div>
-    <div style="text-align: center;">
-      <a href="https://apps.apple.com/br/app/foody-delivery/id6499226064" class="cta-button">Clique aqui</a>
-    </div>
-  </section>
-  
-  <section class="contact">
-    <h2><i>Entre em Contato</i></h2>
-    <div class="contact-info">
-      <a href="https://wa.me/17991564649" target="_blank" class="contact-item">
-        <img src="whatsapp-logo-png.png" alt="WhatsApp" class="contact-icon">
-        (17) 99156-4649
-      </a>
-      <a href="https://www.instagram.com/aguiarexpressdelivery/" target="_blank" class="contact-item">
-        <img src="instagramwebp.webp" alt="Instagram" class="contact-icon">
-        @aguiarexpressdelivery
-      </a>
-      <a href="/cdn-cgi/l/email-protection#ed8c8a98848c9f88959d9f889e9e898881849b889f94ad8a808c8481c38e8280" class="contact-item">
-        <img src="gmailpng.png" alt="Gmail" class="contact-icon">
-        <span class="__cf_email__" data-cfemail="aguiarexpressdelivery@gmail.com">[E-Mail &#160;Aguiar Express]</span>
-      </a>
-    </div>
-  </section>
+        <!-- Modal de Acréscimos -->
+        <div id="acrescimos-modal" class="modal">
+            <div class="modal-content acrescimos-modal-content">
+                <span class="close-modal" onclick="closeAcrescimosModal()">&times;</span>
+                <div class="acrescimos-header">
+                    <h2><i class="fas fa-plus-circle"></i> Personalizar Produto</h2>
+                    <p>Selecione os acréscimos desejados</p>
+                </div>
+                <div class="acrescimos-body">
+                    <div class="produto-selecionado">
+                        <div class="produto-info">
+                            <img id="acrescimos-produto-img" src="/placeholder.svg" alt="" class="produto-img">
+                            <div class="produto-details">
+                                <h3 id="acrescimos-produto-nome"></h3>
+                                <p id="acrescimos-produto-desc"></p>
+                                <div class="produto-preco-base">
+                                    Preço base: R$ <span id="acrescimos-produto-preco">0,00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-  <footer>
-    <p>&copy; 2025 Aguiar Express Delivery</p>
-  </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                    <div class="acrescimos-categorias" id="acrescimos-categorias">
+                        <!-- Categorias de acréscimos serão inseridas aqui -->
+                    </div>
+
+                    <div class="acrescimos-selecionados">
+                        <h3><i class="fas fa-list"></i> Acréscimos Selecionados</h3>
+                        <div id="acrescimos-lista" class="acrescimos-lista">
+                            <div class="nenhum-acrescimo">Nenhum acréscimo selecionado</div>
+                        </div>
+                    </div>
+
+                    <div class="quantidade-section">
+                        <label for="produto-quantidade">
+                            <i class="fas fa-hashtag"></i>
+                            Quantidade:
+                        </label>
+                        <div class="quantidade-controls">
+                            <button type="button" onclick="alterarQuantidadeModal(-1)">-</button>
+                            <input type="number" id="produto-quantidade" value="1" min="1" readonly>
+                            <button type="button" onclick="alterarQuantidadeModal(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="observacoes-produto">
+                        <label for="produto-observacoes">
+                            <i class="fas fa-comment"></i>
+                            Observações (opcional):
+                        </label>
+                        <textarea id="produto-observacoes" placeholder="Ex: sem cebola, ponto da carne, etc..." rows="2"></textarea>
+                    </div>
+
+                    <div class="total-produto">
+                        <div class="total-info">
+                            <span class="total-label">Total:</span>
+                            <span class="total-valor">R$ <span id="total-produto-valor">0,00</span></span>
+                        </div>
+                    </div>
+
+                    <div class="acrescimos-actions">
+                        <button type="button" class="btn-secondary" onclick="closeAcrescimosModal()">
+                            <i class="fas fa-arrow-left"></i>
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn-primary" onclick="adicionarProdutoComAcrescimos()">
+                            <i class="fas fa-cart-plus"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Checkout -->
+        <div id="checkout-modal" class="modal">
+            <div class="modal-content checkout-modal-content">
+                <span class="close-modal" onclick="closeCheckoutModal()">&times;</span>
+                <div class="checkout-header">
+                    <h2><i class="fas fa-shopping-cart"></i> Finalizar Pedido</h2>
+                    <p>Preencha os dados para finalizar seu pedido</p>
+                </div>
+                <div class="checkout-body">
+                    <form id="checkout-form" class="checkout-form">
+                        <!-- Nome do Cliente -->
+                        <div class="form-group">
+                            <label for="cliente-nome">
+                                <i class="fas fa-user"></i>
+                                Nome do Cliente *
+                            </label>
+                            <input type="text" id="cliente-nome" name="nome" required placeholder="Digite seu nome">
+                        </div>
+
+                        <!-- Tipo de Pedido -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-map-marker-alt"></i>
+                                Tipo de Pedido *
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="tipo-pedido" value="mesa" onchange="handleTipoPedidoChange()">
+                                    <span class="radio-custom"></span>
+                                    <i class="fas fa-chair"></i>
+                                    Mesa
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="tipo-pedido" value="retirada" onchange="handleTipoPedidoChange()">
+                                    <span class="radio-custom"></span>
+                                    <i class="fas fa-walking"></i>
+                                    Retirada
+                                </label>
+                                <label class="radio-option" id="entrega-option">
+                                    <input type="radio" name="tipo-pedido" value="entrega" onchange="handleTipoPedidoChange()">
+                                    <span class="radio-custom"></span>
+                                    <i class="fas fa-truck"></i>
+                                    Entrega
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Número da Mesa (apenas para mesa) -->
+                        <div class="form-group" id="mesa-group" style="display: none;">
+                            <label for="numero-mesa">
+                                <i class="fas fa-hashtag"></i>
+                                Número da Mesa
+                            </label>
+                            <input type="number" id="numero-mesa" name="mesa" placeholder="Ex: 5" min="1">
+                        </div>
+
+                        <!-- Endereço de Entrega (apenas para entrega) -->
+                        <div class="form-group" id="endereco-group" style="display: none;">
+                            <label for="endereco-entrega">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Endereço de Entrega *
+                            </label>
+                            <textarea id="endereco-entrega" name="endereco" placeholder="Rua, número, bairro, complemento..." rows="3"></textarea>
+                            <small class="form-help">
+                                <i class="fas fa-info-circle"></i>
+                                Taxa de entrega: R$ <span id="taxa-entrega-display">0,00</span>
+                            </small>
+                        </div>
+
+                        <!-- Forma de Pagamento -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-credit-card"></i>
+                                Forma de Pagamento *
+                            </label>
+                            <div class="radio-group" id="pagamento-options">
+                                <!-- Opções serão inseridas via JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Troco (apenas para dinheiro) -->
+                        <div class="form-group" id="troco-group" style="display: none;">
+                            <label>
+                                <i class="fas fa-money-bill-wave"></i>
+                                Precisa de troco?
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="precisa-troco" value="nao" onchange="handleTrocoChange()">
+                                    <span class="radio-custom"></span>
+                                    Não preciso de troco
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="precisa-troco" value="sim" onchange="handleTrocoChange()">
+                                    <span class="radio-custom"></span>
+                                    Sim, preciso de troco
+                                </label>
+                            </div>
+                            <div id="valor-troco-group" style="display: none; margin-top: 1rem;">
+                                <label for="valor-troco">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Troco para quanto?
+                                </label>
+                                <input type="number" id="valor-troco" name="troco" placeholder="Ex: 50.00" step="0.01" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Observações -->
+                        <div class="form-group">
+                            <label for="observacoes">
+                                <i class="fas fa-comment"></i>
+                                Observações (opcional)
+                            </label>
+                            <textarea id="observacoes" name="observacoes" placeholder="Alguma observação especial sobre seu pedido..." rows="2"></textarea>
+                        </div>
+
+                        <!-- Resumo do Pedido -->
+                        <div class="order-summary">
+                            <h3><i class="fas fa-receipt"></i> Resumo do Pedido</h3>
+                            <div id="checkout-items" class="checkout-items">
+                                <!-- Itens serão inseridos via JavaScript -->
+                            </div>
+                            <div class="checkout-totals">
+                                <div class="total-line">
+                                    <span>Subtotal:</span>
+                                    <span>R$ <span id="checkout-subtotal">0,00</span></span>
+                                </div>
+                                <div class="total-line" id="taxa-entrega-line" style="display: none;">
+                                    <span>Taxa de entrega:</span>
+                                    <span>R$ <span id="checkout-taxa">0,00</span></span>
+                                </div>
+                                <div class="total-line total-final">
+                                    <span><strong>Total:</strong></span>
+                                    <span><strong>R$ <span id="checkout-total-final">0,00</span></strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="checkout-actions">
+                            <button type="button" class="btn-secondary" onclick="closeCheckoutModal()">
+                                <i class="fas fa-arrow-left"></i>
+                                Voltar
+                            </button>
+                            <button type="submit" class="btn-primary">
+                                <i class="fab fa-whatsapp"></i>
+                                Enviar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h3 id="footer-nome">Nome da Empresa</h3>
+                        <p id="footer-endereco">Endereço</p>
+                        <p id="footer-telefone">Telefone</p>
+                    </div>
+                    <div class="footer-social">
+                        <a id="instagram-link" href="#" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a id="facebook-link" href="#" target="_blank">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="footer-payment">
+                        <h4>Formas de Pagamento</h4>
+                        <div id="payment-methods" class="payment-methods">
+                            <!-- Métodos de pagamento serão inseridos aqui -->
+                        </div>
+                    </div>
+                    <div class="footer-admin">
+                      <a href="admin.html" class="admin-link">
+                        <i class="fas fa-cog"></i>
+                        Painel Admin
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="supabase-config.js"></script>
+    <script src="config.js"></script>
+    <script>
+        // Variáveis globais
+        let carrinho = [];
+        let categoriaAtiva = '';
+
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Mostrar splash screen por 3 segundos
+            setTimeout(async () => {
+                try {
+                    // Inicializar Supabase e dados padrão
+                    await window.supabaseConfig.inicializarDadosPadrao();
+                    
+                    // Configurar listeners em tempo real
+                    window.supabaseConfig.configurarRealtimeListeners();
+                    
+                    // Carregar configurações do Supabase
+                    await carregarConfiguracoes();
+                    
+                    // Reinicializar a aplicação
+                    await inicializarApp();
+                    
+                    // Esconder splash e mostrar conteúdo
+                    hideSplashScreen();
+                    
+                    console.log('✅ Aplicação inicializada com sucesso!');
+                } catch (error) {
+                    console.error('❌ Erro ao inicializar aplicação:', error);
+                    hideSplashScreen();
+                    showError('Erro ao carregar o cardápio. Tente novamente.');
+                }
+            }, 3000); // 3 segundos
+        });
+
+        function hideSplashScreen() {
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            // Fade out da splash screen
+            splashScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainContent.classList.remove('main-content-hidden');
+                mainContent.classList.add('main-content-visible');
+            }, 500); // Aguardar animação de fade
+        }
+
+        function showLoading(message) {
+            document.body.innerHTML = `
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; color: white; font-size: 1.2rem; background: var(--background-color);">
+                    <i class="fas fa-spinner fa-spin" style="margin-bottom: 1rem; font-size: 2rem; color: var(--primary-color);"></i>
+                    <div>${message}</div>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Conectando ao Supabase...</div>
+                </div>
+            `;
+        }
+
+        function hideLoading() {
+            // Loading será removido quando recreateHTML() for chamada
+        }
+
+        function showError(message) {
+            document.body.innerHTML = `
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; color: white; font-size: 1.2rem; background: var(--background-color);">
+                    <i class="fas fa-exclamation-triangle" style="margin-bottom: 1rem; font-size: 2rem; color: var(--error-color);"></i>
+                    <div>${message}</div>
+                    <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: var(--border-radius); cursor: pointer;">
+                        Tentar Novamente
+                    </button>
+                </div>
+            `;
+        }
+
+        function recreateHTML() {
+            document.body.innerHTML = `
+                <!-- Header -->
+                <header class="header">
+                    <div class="container">
+                        <div class="header-content">
+                            <img id="logo" src="/placeholder.svg?height=60&width=60" alt="Logo" class="logo">
+                            <div class="header-info">
+                                <h1 id="empresa-nome">Carregando...</h1>
+                                <div class="status-container">
+                                    <span id="status-funcionamento" class="status"></span>
+                                </div>
+                            </div>
+                            <div class="header-actions">
+                                <button class="cart-btn" onclick="toggleCart()">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span id="cart-count" class="cart-count">0</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Navigation -->
+                <nav class="nav">
+                    <div class="container">
+                        <div id="categorias-nav" class="nav-categories">
+                            <!-- Categorias serão inseridas aqui via JavaScript -->
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Main Content -->
+                <main class="main">
+                    <div class="container">
+                        <!-- Produtos em Destaque -->
+                        <section id="destaques" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-star"></i>
+                                Destaques
+                            </h2>
+                            <div id="produtos-destaque" class="products-grid">
+                                <!-- Produtos em destaque serão inseridos aqui -->
+                            </div>
+                        </section>
+
+                        <!-- Categorias de Produtos -->
+                        <div id="categorias-produtos">
+                            <!-- Seções de categorias serão inseridas aqui -->
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Carrinho Lateral -->
+                <div id="cart-sidebar" class="cart-sidebar">
+                    <div class="cart-header">
+                        <h3><i class="fas fa-shopping-cart"></i> Seu Pedido</h3>
+                        <button class="close-cart" onclick="toggleCart()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="cart-items" class="cart-items">
+                        <!-- Itens do carrinho serão inseridos aqui -->
+                    </div>
+                    <div class="cart-footer">
+                        <div class="cart-total">
+                            <strong>Total: R$ <span id="cart-total">0,00</span></strong>
+                        </div>
+                        <button id="checkout-btn" class="checkout-btn" onclick="finalizarPedido()">
+                            <i class="fab fa-whatsapp"></i>
+                            Finalizar Pedido
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Overlay -->
+                <div id="overlay" class="overlay" onclick="toggleCart()"></div>
+
+                <!-- Modal de Produto -->
+                <div id="product-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal" onclick="closeProductModal()">&times;</span>
+                        <div id="modal-body">
+                            <!-- Conteúdo do modal será inserido aqui -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="container">
+                        <div class="footer-content">
+                            <div class="footer-info">
+                                <h3 id="footer-nome">Nome da Empresa</h3>
+                                <p id="footer-endereco">Endereço</p>
+                                <p id="footer-telefone">Telefone</p>
+                            </div>
+                            <div class="footer-social">
+                                <a id="instagram-link" href="#" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a id="facebook-link" href="#" target="_blank">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </div>
+                            <div class="footer-payment">
+                                <h4>Formas de Pagamento</h4>
+                                <div id="payment-methods" class="payment-methods">
+                                    <!-- Métodos de pagamento serão inseridos aqui -->
+                                </div>
+                            </div>
+                            <div class="footer-admin">
+                              <a href="admin.html" class="admin-link">
+                                <i class="fas fa-cog"></i>
+                                Painel Admin
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        // Modificar a função inicializarApp para ser async
+        async function inicializarApp() {
+            carregarInformacoesEmpresa();
+            verificarHorarioFuncionamento();
+            carregarCategorias();
+            carregarProdutos();
+            carregarFormasPagamento();
+            atualizarCarrinho();
+        }
+
+        // Adicionar listeners para atualizações em tempo real
+        window.addEventListener('configUpdated', function(e) {
+            console.log('🔄 Configurações atualizadas via Supabase:', e.detail);
+            if (e.detail.source === 'supabase') {
+                inicializarApp();
+                mostrarNotificacao('Configurações atualizadas!', 'info');
+            }
+        });
+
+        window.addEventListener('menuItemsUpdated', function(e) {
+            console.log('🔄 Menu items atualizados via Supabase:', e.detail);
+            if (e.detail.source === 'supabase') {
+                inicializarApp();
+                mostrarNotificacao('Cardápio atualizado!', 'info');
+            }
+        });
+
+        function carregarInformacoesEmpresa() {
+            document.getElementById('page-title').textContent = `${CONFIG.empresa.nome} - Cardápio Digital`;
+            document.getElementById('empresa-nome').textContent = CONFIG.empresa.nome;
+            document.getElementById('logo').src = CONFIG.empresa.logo;
+            document.getElementById('footer-nome').textContent = CONFIG.empresa.nome;
+            document.getElementById('footer-endereco').textContent = CONFIG.empresa.endereco;
+            document.getElementById('footer-telefone').textContent = CONFIG.empresa.telefone;
+            
+            if (CONFIG.empresa.instagram) {
+                document.getElementById('instagram-link').href = `https://instagram.com/${CONFIG.empresa.instagram.replace('@', '')}`;
+            }
+            if (CONFIG.empresa.facebook) {
+                document.getElementById('facebook-link').href = `https://facebook.com/${CONFIG.empresa.facebook}`;
+            }
+        }
+
+        function verificarHorarioFuncionamento() {
+            if (!CONFIG.horarioFuncionamento.ativo) {
+                document.getElementById('status-funcionamento').innerHTML = 
+                    '<span class="status-open"><i class="fas fa-clock"></i> Sempre Aberto</span>';
+                return;
+            }
+
+            const agora = new Date();
+            const diaSemana = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'][agora.getDay()];
+            const horarioHoje = CONFIG.horarioFuncionamento.horarios[diaSemana];
+
+            if (!horarioHoje.aberto) {
+                document.getElementById('status-funcionamento').innerHTML = 
+                    '<span class="status-closed"><i class="fas fa-times-circle"></i> Fechado hoje</span>';
+                return;
+            }
+
+            const horaAtual = agora.getHours() * 60 + agora.getMinutes();
+            const [horaAbertura, minutoAbertura] = horarioHoje.abertura.split(':').map(Number);
+            const [horaFechamento, minutoFechamento] = horarioHoje.fechamento.split(':').map(Number);
+            
+            const minutosAbertura = horaAbertura * 60 + minutoAbertura;
+            let minutosFechamento = horaFechamento * 60 + minutoFechamento;
+            
+            // Se o fechamento é no dia seguinte (ex: 00:00)
+            if (minutosFechamento < minutosAbertura) {
+                minutosFechamento += 24 * 60;
+            }
+
+            const aberto = horaAtual >= minutosAbertura && horaAtual <= minutosFechamento;
+
+            if (aberto) {
+                document.getElementById('status-funcionamento').innerHTML = 
+                    `<span class="status-open"><i class="fas fa-check-circle"></i> Aberto até ${horarioHoje.fechamento}</span>`;
+            } else {
+                document.getElementById('status-funcionamento').innerHTML = 
+                    `<span class="status-closed"><i class="fas fa-times-circle"></i> Fechado - Abre às ${horarioHoje.abertura}</span>`;
+            }
+        }
+
+        function carregarCategorias() {
+            const navCategorias = document.getElementById('categorias-nav');
+            const categoriasAtivas = CONFIG.categorias.filter(cat => cat.ativo);
+
+            navCategorias.innerHTML = categoriasAtivas.map(categoria => `
+                <button class="nav-category ${categoria.id === categoriaAtiva ? 'active' : ''}" 
+                        onclick="scrollToCategory('${categoria.id}')">
+                    <span class="category-icon">${categoria.icone}</span>
+                    ${categoria.nome}
+                </button>
+            `).join('');
+        }
+
+        function carregarProdutos() {
+            // Carregar produtos em destaque
+            const produtosDestaque = CONFIG.produtos.filter(produto => produto.destaque && produto.disponivel);
+            const containerDestaque = document.getElementById('produtos-destaque');
+            
+            if (produtosDestaque.length > 0) {
+                containerDestaque.innerHTML = produtosDestaque.map(produto => criarCardProduto(produto)).join('');
+                document.getElementById('destaques').style.display = 'block';
+            } else {
+                document.getElementById('destaques').style.display = 'none';
+            }
+
+            // Carregar produtos por categoria
+            const containerCategorias = document.getElementById('categorias-produtos');
+            const categoriasAtivas = CONFIG.categorias.filter(cat => cat.ativo);
+
+            containerCategorias.innerHTML = categoriasAtivas.map(categoria => {
+                const produtosCategoria = CONFIG.produtos.filter(produto => 
+                    produto.categoria === categoria.id && produto.disponivel
+                );
+
+                if (produtosCategoria.length === 0) return '';
+
+                return `
+                    <section id="categoria-${categoria.id}" class="section">
+                        <h2 class="section-title">
+                            <span class="category-icon">${categoria.icone}</span>
+                            ${categoria.nome}
+                        </h2>
+                        <div class="products-grid">
+                            ${produtosCategoria.map(produto => criarCardProduto(produto)).join('')}
+                        </div>
+                    </section>
+                `;
+            }).join('');
+        }
+
+        function criarCardProduto(produto) {
+            return `
+                <div class="product-card" onclick="openProductModal(${produto.id})">
+                    <div class="product-image">
+                        <img src="${produto.imagem}" alt="${produto.nome}" loading="lazy">
+                        ${produto.destaque ? '<span class="product-badge">Destaque</span>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${produto.nome}</h3>
+                        <p class="product-description">${produto.descricao}</p>
+                        ${CONFIG.configuracoes.mostraPrecos ? `
+                            <div class="product-price">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
+                        ` : ''}
+                        <button class="add-to-cart-btn" onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})">
+                            <i class="fas fa-plus"></i>
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function carregarFormasPagamento() {
+            const container = document.getElementById('payment-methods');
+            const metodos = [];
+
+            if (CONFIG.pagamento.pix.ativo) {
+                metodos.push('<i class="fas fa-qrcode" title="PIX"></i>');
+            }
+            if (CONFIG.pagamento.dinheiro.ativo) {
+                metodos.push('<i class="fas fa-money-bill-wave" title="Dinheiro"></i>');
+            }
+            if (CONFIG.pagamento.cartao.ativo) {
+                metodos.push('<i class="fas fa-credit-card" title="Cartão"></i>');
+            }
+
+            container.innerHTML = metodos.join('');
+        }
+
+        function scrollToCategory(categoriaId) {
+            const elemento = document.getElementById(`categoria-${categoriaId}`);
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            categoriaAtiva = categoriaId;
+            carregarCategorias();
+        }
+
+        // Variáveis globais para acréscimos
+        let produtoSelecionado = null;
+        let acrescimosSelecionados = [];
+        let quantidadeProduto = 1;
+
+        function openProductModal(produtoId) {
+            const produto = CONFIG.produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+
+            // Se o produto não permite acréscimos, adicionar diretamente
+            if (produto.noAddons) {
+                adicionarAoCarrinho(produtoId);
+                return;
+            }
+
+            // Abrir modal de acréscimos
+            openAcrescimosModal(produto);
+        }
+
+        function openAcrescimosModal(produto) {
+            produtoSelecionado = produto;
+            acrescimosSelecionados = [];
+            quantidadeProduto = 1;
+
+            const modal = document.getElementById('acrescimos-modal');
+            
+            // Preencher informações do produto
+            document.getElementById('acrescimos-produto-img').src = produto.imagem;
+            document.getElementById('acrescimos-produto-img').alt = produto.nome;
+            document.getElementById('acrescimos-produto-nome').textContent = produto.nome;
+            document.getElementById('acrescimos-produto-desc').textContent = produto.descricao;
+            document.getElementById('acrescimos-produto-preco').textContent = produto.preco.toFixed(2).replace('.', ',');
+            document.getElementById('produto-quantidade').value = quantidadeProduto;
+            document.getElementById('produto-observacoes').value = '';
+
+            // Carregar categorias de acréscimos
+            loadAcrescimosCategories();
+            
+            // Atualizar total
+            updateTotalProduto();
+            
+            modal.style.display = 'block';
+        }
+
+        function closeAcrescimosModal() {
+            document.getElementById('acrescimos-modal').style.display = 'none';
+            produtoSelecionado = null;
+            acrescimosSelecionados = [];
+            quantidadeProduto = 1;
+        }
+
+        function loadAcrescimosCategories() {
+            const container = document.getElementById('acrescimos-categorias');
+            const categoriasAtivas = CONFIG.categoriasAcrescimos?.filter(cat => cat.ativo) || [];
+
+            container.innerHTML = categoriasAtivas.map(categoria => {
+                const acrescimosCategoria = CONFIG.acrescimos?.filter(acr => 
+                    acr.categoria === categoria.id && acr.ativo
+                ) || [];
+
+                if (acrescimosCategoria.length === 0) return '';
+
+                return `
+                    <div class="acrescimo-categoria">
+                        <h4 class="categoria-titulo">
+                            <span class="categoria-icone">${categoria.icone}</span>
+                            ${categoria.nome}
+                        </h4>
+                        <div class="acrescimos-grid">
+                            ${acrescimosCategoria.map(acrescimo => `
+                                <div class="acrescimo-item" onclick="toggleAcrescimo(${acrescimo.id})">
+                                    <div class="acrescimo-checkbox">
+                                        <input type="checkbox" id="acr-${acrescimo.id}" onchange="toggleAcrescimo(${acrescimo.id})">
+                                        <span class="checkbox-custom"></span>
+                                    </div>
+                                    <div class="acrescimo-info">
+                                        <span class="acrescimo-nome">${acrescimo.nome}</span>
+                                        <span class="acrescimo-preco">+R$ ${acrescimo.preco.toFixed(2).replace('.', ',')}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleAcrescimo(acrescimoId) {
+            const acrescimo = CONFIG.acrescimos?.find(a => a.id === acrescimoId);
+            if (!acrescimo) return;
+
+            const checkbox = document.getElementById(`acr-${acrescimoId}`);
+            const index = acrescimosSelecionados.findIndex(a => a.id === acrescimoId);
+
+            if (checkbox.checked && index === -1) {
+                // Adicionar acréscimo
+                acrescimosSelecionados.push({
+                    id: acrescimo.id,
+                    nome: acrescimo.nome,
+                    preco: acrescimo.preco
+                });
+            } else if (!checkbox.checked && index !== -1) {
+                // Remover acréscimo
+                acrescimosSelecionados.splice(index, 1);
+            }
+
+            updateAcrescimosList();
+            updateTotalProduto();
+        }
+
+        function updateAcrescimosList() {
+            const container = document.getElementById('acrescimos-lista');
+            
+            if (acrescimosSelecionados.length === 0) {
+                container.innerHTML = '<div class="nenhum-acrescimo">Nenhum acréscimo selecionado</div>';
+                return;
+            }
+
+            container.innerHTML = acrescimosSelecionados.map(acrescimo => `
+                <div class="acrescimo-selecionado">
+                    <span class="acrescimo-nome">${acrescimo.nome}</span>
+                    <span class="acrescimo-preco">+R$ ${acrescimo.preco.toFixed(2).replace('.', ',')}</span>
+                    <button class="remove-acrescimo" onclick="removeAcrescimo(${acrescimo.id})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeAcrescimo(acrescimoId) {
+            const checkbox = document.getElementById(`acr-${acrescimoId}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            toggleAcrescimo(acrescimoId);
+        }
+
+        function alterarQuantidadeModal(delta) {
+            const novaQuantidade = quantidadeProduto + delta;
+            if (novaQuantidade >= 1) {
+                quantidadeProduto = novaQuantidade;
+                document.getElementById('produto-quantidade').value = quantidadeProduto;
+                updateTotalProduto();
+            }
+        }
+
+        function updateTotalProduto() {
+            if (!produtoSelecionado) return;
+
+            const precoBase = produtoSelecionado.preco;
+            const precoAcrescimos = acrescimosSelecionados.reduce((total, acr) => total + acr.preco, 0);
+            const precoUnitario = precoBase + precoAcrescimos;
+            const precoTotal = precoUnitario * quantidadeProduto;
+
+            document.getElementById('total-produto-valor').textContent = precoTotal.toFixed(2).replace('.', ',');
+        }
+
+        function adicionarProdutoComAcrescimos() {
+            if (!produtoSelecionado) return;
+
+            const observacoes = document.getElementById('produto-observacoes').value.trim();
+            const precoBase = produtoSelecionado.preco;
+            const precoAcrescimos = acrescimosSelecionados.reduce((total, acr) => total + acr.preco, 0);
+            const precoUnitario = precoBase + precoAcrescimos;
+
+            // Criar nome detalhado do produto
+            let nomeCompleto = produtoSelecionado.nome;
+            if (acrescimosSelecionados.length > 0) {
+                const nomesAcrescimos = acrescimosSelecionados.map(a => a.nome).join(', ');
+                nomeCompleto += ` (+ ${nomesAcrescimos})`;
+            }
+
+            // Verificar se já existe um item idêntico no carrinho
+            const itemExistente = carrinho.find(item => 
+                item.produtoId === produtoSelecionado.id &&
+                JSON.stringify(item.acrescimos) === JSON.stringify(acrescimosSelecionados) &&
+                item.observacoes === observacoes
+            );
+
+            if (itemExistente) {
+                itemExistente.quantidade += quantidadeProduto;
+            } else {
+                carrinho.push({
+                    id: Date.now(), // ID único para o item do carrinho
+                    produtoId: produtoSelecionado.id,
+                    nome: nomeCompleto,
+                    nomeOriginal: produtoSelecionado.nome,
+                    preco: precoUnitario,
+                    precoBase: precoBase,
+                    quantidade: quantidadeProduto,
+                    acrescimos: [...acrescimosSelecionados],
+                    observacoes: observacoes
+                });
+            }
+
+            atualizarCarrinho();
+            closeAcrescimosModal();
+            mostrarNotificacao(`${produtoSelecionado.nome} adicionado ao carrinho!`);
+        }
+
+        // Atualizar função de remoção do carrinho para usar o ID único
+        function removerDoCarrinho(itemId) {
+            carrinho = carrinho.filter(item => item.id !== itemId);
+            atualizarCarrinho();
+        }
+
+        function alterarQuantidade(itemId, novaQuantidade) {
+            const item = carrinho.find(item => item.id === itemId);
+            if (item) {
+                if (novaQuantidade <= 0) {
+                    removerDoCarrinho(itemId);
+                } else {
+                    item.quantidade = novaQuantidade;
+                    atualizarCarrinho();
+                }
+            }
+        }
+
+        // Atualizar função do carrinho para mostrar acréscimos
+        function atualizarCarrinho() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+            const totalPreco = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+
+            cartCount.textContent = totalItens;
+            cartTotal.textContent = totalPreco.toFixed(2).replace('.', ',');
+
+            if (carrinho.length === 0) {
+                cartItems.innerHTML = '<div class="cart-empty">Seu carrinho está vazio</div>';
+            } else {
+                cartItems.innerHTML = carrinho.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.nomeOriginal}</h4>
+                            ${item.acrescimos.length > 0 ? `
+                                <div class="cart-item-acrescimos">
+                                    ${item.acrescimos.map(acr => `<span class="acrescimo-tag">+${acr.nome}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            ${item.observacoes ? `<div class="cart-item-obs"><i class="fas fa-comment"></i> ${item.observacoes}</div>` : ''}
+                            <div class="cart-item-price">R$ ${item.preco.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button onclick="alterarQuantidade(${item.id}, ${item.quantidade - 1})">-</button>
+                            <span>${item.quantidade}</span>
+                            <button onclick="alterarQuantidade(${item.id}, ${item.quantidade + 1})">+</button>
+                            <button class="remove-btn" onclick="removerDoCarrinho(${item.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function finalizarPedido() {
+            if (carrinho.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+
+            if (!CONFIG.configuracoes.whatsappPedidos) {
+                alert('Pedidos via WhatsApp não estão disponíveis no momento.');
+                return;
+            }
+
+            // Mostrar modal de checkout
+            showCheckoutModal();
+        }
+
+        function showCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            
+            // Carregar opções de pagamento
+            loadPagamentoOptions();
+            
+            // Carregar resumo do pedido
+            loadCheckoutSummary();
+            
+            // Verificar se delivery está disponível
+            const entregaOption = document.getElementById('entrega-option');
+            if (!CONFIG.pagamento.delivery.ativo) {
+                entregaOption.style.display = 'none';
+            } else {
+                entregaOption.style.display = 'block';
+                document.getElementById('taxa-entrega-display').textContent = 
+                    CONFIG.pagamento.delivery.taxa.toFixed(2).replace('.', ',');
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+            document.getElementById('checkout-form').reset();
+            
+            // Esconder grupos condicionais
+            document.getElementById('mesa-group').style.display = 'none';
+            document.getElementById('endereco-group').style.display = 'none';
+            document.getElementById('troco-group').style.display = 'none';
+    document.getElementById('valor-troco-group').style.display = 'none';
+    document.getElementById('taxa-entrega-line').style.display = 'none';
+}
+
+function loadPagamentoOptions() {
+    const container = document.getElementById('pagamento-options');
+    const opcoes = [];
+
+    if (CONFIG.pagamento.pix.ativo) {
+        opcoes.push(`
+            <label class="radio-option">
+                <input type="radio" name="forma-pagamento" value="pix" onchange="handlePagamentoChange()">
+                <span class="radio-custom"></span>
+                <i class="fas fa-qrcode"></i>
+                PIX
+            </label>
+        `);
+    }
+
+    if (CONFIG.pagamento.dinheiro.ativo) {
+        opcoes.push(`
+            <label class="radio-option">
+                <input type="radio" name="forma-pagamento" value="dinheiro" onchange="handlePagamentoChange()">
+                <span class="radio-custom"></span>
+                <i class="fas fa-money-bill-wave"></i>
+                Dinheiro
+            </label>
+        `);
+    }
+
+    if (CONFIG.pagamento.cartao.ativo) {
+        opcoes.push(`
+            <label class="radio-option">
+                <input type="radio" name="forma-pagamento" value="cartao" onchange="handlePagamentoChange()">
+                <span class="radio-custom"></span>
+                <i class="fas fa-credit-card"></i>
+                Cartão
+            </label>
+        `);
+    }
+
+    container.innerHTML = opcoes.join('');
+}
+
+function loadCheckoutSummary() {
+    const itemsContainer = document.getElementById('checkout-items');
+    const subtotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+    
+    // Mostrar itens
+    itemsContainer.innerHTML = carrinho.map(item => `
+        <div class="checkout-item">
+            <span class="item-name">${item.quantidade}x ${item.nome}</span>
+            <span class="item-price">R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</span>
+        </div>
+    `).join('');
+    
+    // Atualizar totais
+    document.getElementById('checkout-subtotal').textContent = subtotal.toFixed(2).replace('.', ',');
+    document.getElementById('checkout-total-final').textContent = subtotal.toFixed(2).replace('.', ',');
+}
+
+function handleTipoPedidoChange() {
+    const tipoPedido = document.querySelector('input[name="tipo-pedido"]:checked')?.value;
+    const mesaGroup = document.getElementById('mesa-group');
+    const enderecoGroup = document.getElementById('endereco-group');
+    const taxaEntregaLine = document.getElementById('taxa-entrega-line');
+    
+    // Esconder todos os grupos primeiro
+    mesaGroup.style.display = 'none';
+    enderecoGroup.style.display = 'none';
+    taxaEntregaLine.style.display = 'none';
+    
+    // Mostrar grupo relevante
+    if (tipoPedido === 'mesa') {
+        mesaGroup.style.display = 'block';
+    } else if (tipoPedido === 'entrega') {
+        enderecoGroup.style.display = 'block';
+        taxaEntregaLine.style.display = 'flex';
+        
+        // Atualizar total com taxa de entrega
+        updateCheckoutTotal();
+    }
+    
+    // Atualizar total
+    updateCheckoutTotal();
+}
+
+function handlePagamentoChange() {
+    const formaPagamento = document.querySelector('input[name="forma-pagamento"]:checked')?.value;
+    const trocoGroup = document.getElementById('troco-group');
+    
+    if (formaPagamento === 'dinheiro') {
+        trocoGroup.style.display = 'block';
+    } else {
+        trocoGroup.style.display = 'none';
+        document.getElementById('valor-troco-group').style.display = 'none';
+    }
+}
+
+function handleTrocoChange() {
+    const precisaTroco = document.querySelector('input[name="precisa-troco"]:checked')?.value;
+    const valorTrocoGroup = document.getElementById('valor-troco-group');
+    
+    if (precisaTroco === 'sim') {
+        valorTrocoGroup.style.display = 'block';
+    } else {
+        valorTrocoGroup.style.display = 'none';
+    }
+}
+
+function updateCheckoutTotal() {
+    const subtotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+    const tipoPedido = document.querySelector('input[name="tipo-pedido"]:checked')?.value;
+    let taxaEntrega = 0;
+    
+    if (tipoPedido === 'entrega' && CONFIG.pagamento.delivery.ativo) {
+        taxaEntrega = CONFIG.pagamento.delivery.taxa;
+        document.getElementById('checkout-taxa').textContent = taxaEntrega.toFixed(2).replace('.', ',');
+    }
+    
+    const total = subtotal + taxaEntrega;
+    document.getElementById('checkout-total-final').textContent = total.toFixed(2).replace('.', ',');
+}
+
+// Event listener para o formulário de checkout
+document.addEventListener('DOMContentLoaded', function() {
+    // ... código existente ...
+    
+    // Adicionar event listener para o formulário de checkout
+    document.getElementById('checkout-form').addEventListener('submit', handleCheckoutSubmit);
+});
+
+function handleCheckoutSubmit(e) {
+    e.preventDefault();
+    
+    // Validar campos obrigatórios
+    const nome = document.getElementById('cliente-nome').value.trim();
+    const tipoPedido = document.querySelector('input[name="tipo-pedido"]:checked')?.value;
+    const formaPagamento = document.querySelector('input[name="forma-pagamento"]:checked')?.value;
+    
+    if (!nome) {
+        alert('Por favor, informe seu nome.');
+        return;
+    }
+    
+    if (!tipoPedido) {
+        alert('Por favor, selecione o tipo de pedido.');
+        return;
+    }
+    
+    if (!formaPagamento) {
+        alert('Por favor, selecione a forma de pagamento.');
+        return;
+    }
+    
+    // Validações específicas
+    if (tipoPedido === 'entrega') {
+        const endereco = document.getElementById('endereco-entrega').value.trim();
+        if (!endereco) {
+            alert('Por favor, informe o endereço de entrega.');
+            return;
+        }
+    }
+    
+    if (formaPagamento === 'dinheiro') {
+        const precisaTroco = document.querySelector('input[name="precisa-troco"]:checked')?.value;
+        if (!precisaTroco) {
+            alert('Por favor, informe se precisa de troco.');
+            return;
+        }
+        
+        if (precisaTroco === 'sim') {
+            const valorTroco = document.getElementById('valor-troco').value;
+            if (!valorTroco || parseFloat(valorTroco) <= 0) {
+                alert('Por favor, informe o valor para o troco.');
+                return;
+            }
+        }
+    }
+    
+    // Processar pedido
+    processarPedidoFinal();
+}
+
+function processarPedidoFinal() {
+    const nome = document.getElementById('cliente-nome').value.trim();
+    const tipoPedido = document.querySelector('input[name="tipo-pedido"]:checked').value;
+    const formaPagamento = document.querySelector('input[name="forma-pagamento"]:checked').value;
+    const observacoes = document.getElementById('observacoes').value.trim();
+    
+    let mensagem = `🍔 *Novo Pedido - ${CONFIG.empresa.nome}*\n\n`;
+    mensagem += `👤 *Cliente:* ${nome}\n`;
+    
+    // Tipo de pedido
+    const tipoIcons = {
+        'mesa': '🪑',
+        'retirada': '🚶‍♂️',
+        'entrega': '🚚'
+    };
+    
+    const tipoTextos = {
+        'mesa': 'Mesa',
+        'retirada': 'Retirada',
+        'entrega': 'Entrega'
+    };
+    
+    mensagem += `${tipoIcons[tipoPedido]} *Tipo:* ${tipoTextos[tipoPedido]}`;
+    
+    if (tipoPedido === 'mesa') {
+        const numeroMesa = document.getElementById('numero-mesa').value;
+        if (numeroMesa) {
+            mensagem += ` - Mesa ${numeroMesa}`;
+        }
+    } else if (tipoPedido === 'entrega') {
+        const endereco = document.getElementById('endereco-entrega').value.trim();
+        mensagem += `\n📍 *Endereço:* ${endereco}`;
+    }
+    
+    mensagem += `\n\n📋 *ITENS DO PEDIDO:*\n`;
+    
+    carrinho.forEach(item => {
+        mensagem += `• ${item.quantidade}x ${item.nomeOriginal}\n`;
+        
+        if (item.acrescimos.length > 0) {
+            item.acrescimos.forEach(acr => {
+                mensagem += `  + ${acr.nome} (+R$ ${acr.preco.toFixed(2).replace('.', ',')})\n`;
+            });
+        }
+        
+        if (item.observacoes) {
+            mensagem += `  📝 ${item.observacoes}\n`;
+        }
+        
+        mensagem += `  💰 R$ ${item.preco.toFixed(2).replace('.', ',')} cada\n`;
+        mensagem += `  🔢 Subtotal: R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}\n\n`;
+    });
+
+    // ... resto do código permanece igual ...
+}
+
+// Fechar modal ao clicar fora
+window.onclick = function(event) {
+    const productModal = document.getElementById('product-modal');
+    const checkoutModal = document.getElementById('checkout-modal');
+    const acrescimosModal = document.getElementById('acrescimos-modal');
+    
+    if (event.target === productModal) {
+        closeProductModal();
+    } else if (event.target === checkoutModal) {
+        closeCheckoutModal();
+    } else if (event.target === acrescimosModal) {
+        closeAcrescimosModal();
+    }
+}
+
+// Atualizar horário a cada minuto
+setInterval(verificarHorarioFuncionamento, 60000);
+    </script>
 </body>
-
 </html>
