@@ -138,8 +138,11 @@
                         </div>
                     </div>
 
-                    <div class="acrescimos-categorias" id="acrescimos-categorias">
-                        <!-- Categorias de acréscimos serão inseridas aqui -->
+                    <div class="acrescimos-section">
+                        <h3><i class="fas fa-plus"></i> Acréscimos Disponíveis</h3>
+                        <div id="acrescimos-lista-disponivel" class="acrescimos-lista-disponivel">
+                            <!-- Acréscimos serão inseridos aqui -->
+                        </div>
                     </div>
 
                     <div class="acrescimos-selecionados">
@@ -724,7 +727,7 @@
                         ${CONFIG.configuracoes.mostraPrecos ? `
                             <div class="product-price">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
                         ` : ''}
-                        <button class="add-to-cart-btn" onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})">
+                        <button class="add-to-cart-btn" onclick="event.stopPropagation(); openAcrescimosModal(${produto.id})">
                             <i class="fas fa-plus"></i>
                             Adicionar
                         </button>
@@ -768,17 +771,39 @@
             const produto = CONFIG.produtos.find(p => p.id === produtoId);
             if (!produto) return;
 
-            // Se o produto não permite acréscimos, adicionar diretamente
-            if (produto.noAddons) {
-                adicionarAoCarrinho(produtoId);
-                return;
-            }
+            const modal = document.getElementById('product-modal');
+            const modalBody = document.getElementById('modal-body');
 
-            // Abrir modal de acréscimos
-            openAcrescimosModal(produto);
+            modalBody.innerHTML = `
+                <div class="modal-product">
+                    <img src="${produto.imagem}" alt="${produto.nome}" class="modal-product-image">
+                    <div class="modal-product-info">
+                        <h2>${produto.nome}</h2>
+                        <p class="modal-product-description">${produto.descricao}</p>
+                        ${CONFIG.configuracoes.mostraPrecos ? `
+                            <div class="modal-product-price">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
+                        ` : ''}
+                        <div class="modal-actions">
+                            <button class="modal-add-btn" onclick="openAcrescimosModal(${produto.id}); closeProductModal();">
+                                <i class="fas fa-plus"></i>
+                                Adicionar ao Pedido
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'block';
         }
 
-        function openAcrescimosModal(produto) {
+        function closeProductModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        function openAcrescimosModal(produtoId) {
+            const produto = CONFIG.produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+
             produtoSelecionado = produto;
             acrescimosSelecionados = [];
             quantidadeProduto = 1;
@@ -794,8 +819,8 @@
             document.getElementById('produto-quantidade').value = quantidadeProduto;
             document.getElementById('produto-observacoes').value = '';
 
-            // Carregar categorias de acréscimos
-            loadAcrescimosCategories();
+            // Carregar acréscimos
+            loadAcrescimos();
             
             // Atualizar total
             updateTotalProduto();
@@ -810,64 +835,57 @@
             quantidadeProduto = 1;
         }
 
-        function loadAcrescimosCategories() {
-            const container = document.getElementById('acrescimos-categorias');
-            const categoriasAtivas = CONFIG.categoriasAcrescimos?.filter(cat => cat.ativo) || [];
+        function loadAcrescimos() {
+            const container = document.getElementById('acrescimos-lista-disponivel');
+            const acrescimosAtivos = CONFIG.acrescimos?.filter(acr => acr.ativo) || [];
 
-            container.innerHTML = categoriasAtivas.map(categoria => {
-                const acrescimosCategoria = CONFIG.acrescimos?.filter(acr => 
-                    acr.categoria === categoria.id && acr.ativo
-                ) || [];
+            if (acrescimosAtivos.length === 0) {
+                container.innerHTML = '<div class="nenhum-acrescimo">Nenhum acréscimo disponível</div>';
+                return;
+            }
 
-                if (acrescimosCategoria.length === 0) return '';
-
-                return `
-                    <div class="acrescimo-categoria">
-                        <h4 class="categoria-titulo">
-                            <span class="categoria-icone">${categoria.icone}</span>
-                            ${categoria.nome}
-                        </h4>
-                        <div class="acrescimos-grid">
-                            ${acrescimosCategoria.map(acrescimo => `
-                                <div class="acrescimo-item" onclick="toggleAcrescimo(${acrescimo.id})">
-                                    <div class="acrescimo-checkbox">
-                                        <input type="checkbox" id="acr-${acrescimo.id}" onchange="toggleAcrescimo(${acrescimo.id})">
-                                        <span class="checkbox-custom"></span>
-                                    </div>
-                                    <div class="acrescimo-info">
-                                        <span class="acrescimo-nome">${acrescimo.nome}</span>
-                                        <span class="acrescimo-preco">+R$ ${acrescimo.preco.toFixed(2).replace('.', ',')}</span>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = acrescimosAtivos.map(acrescimo => `
+        <div class="acrescimo-item" onclick="toggleAcrescimo(${acrescimo.id})">
+            <div class="acrescimo-checkbox">
+                <input type="checkbox" id="acr-${acrescimo.id}" onclick="event.stopPropagation(); toggleAcrescimo(${acrescimo.id})">
+                <span class="checkbox-custom"></span>
+            </div>
+            <div class="acrescimo-info">
+                <span class="acrescimo-nome">${acrescimo.nome}</span>
+                <span class="acrescimo-preco">+R$ ${acrescimo.preco.toFixed(2).replace('.', ',')}</span>
+            </div>
+        </div>
+    `).join('');
         }
 
         function toggleAcrescimo(acrescimoId) {
-            const acrescimo = CONFIG.acrescimos?.find(a => a.id === acrescimoId);
-            if (!acrescimo) return;
+    const acrescimo = CONFIG.acrescimos?.find(a => a.id === acrescimoId);
+    if (!acrescimo) return;
 
-            const checkbox = document.getElementById(`acr-${acrescimoId}`);
-            const index = acrescimosSelecionados.findIndex(a => a.id === acrescimoId);
+    const checkbox = document.getElementById(`acr-${acrescimoId}`);
+    const index = acrescimosSelecionados.findIndex(a => a.id === acrescimoId);
 
-            if (checkbox.checked && index === -1) {
-                // Adicionar acréscimo
-                acrescimosSelecionados.push({
-                    id: acrescimo.id,
-                    nome: acrescimo.nome,
-                    preco: acrescimo.preco
-                });
-            } else if (!checkbox.checked && index !== -1) {
-                // Remover acréscimo
-                acrescimosSelecionados.splice(index, 1);
-            }
+    // Se o checkbox foi clicado diretamente, usar seu estado
+    // Se foi clicado no item, alternar o estado do checkbox
+    if (event.target.type !== 'checkbox') {
+        checkbox.checked = !checkbox.checked;
+    }
 
-            updateAcrescimosList();
-            updateTotalProduto();
-        }
+    if (checkbox.checked && index === -1) {
+        // Adicionar acréscimo
+        acrescimosSelecionados.push({
+            id: acrescimo.id,
+            nome: acrescimo.nome,
+            preco: acrescimo.preco
+        });
+    } else if (!checkbox.checked && index !== -1) {
+        // Remover acréscimo
+        acrescimosSelecionados.splice(index, 1);
+    }
+
+    updateAcrescimosList();
+    updateTotalProduto();
+}
 
         function updateAcrescimosList() {
             const container = document.getElementById('acrescimos-lista');
@@ -1312,7 +1330,90 @@ function processarPedidoFinal() {
         mensagem += `  🔢 Subtotal: R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}\n\n`;
     });
 
-    // ... resto do código permanece igual ...
+    const subtotal = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+    let taxaEntrega = 0;
+    
+    mensagem += `\n💰 *Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+    
+    if (tipoPedido === 'entrega' && CONFIG.pagamento.delivery.ativo) {
+        taxaEntrega = CONFIG.pagamento.delivery.taxa;
+        mensagem += `🚚 *Taxa de entrega:* R$ ${taxaEntrega.toFixed(2).replace('.', ',')}\n`;
+        mensagem += `⏰ *Tempo estimado:* ${CONFIG.pagamento.delivery.tempoEntrega}\n`;
+    }
+    
+    const total = subtotal + taxaEntrega;
+    mensagem += `💵 *TOTAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
+    
+    // Forma de pagamento
+    const pagamentoIcons = {
+        'pix': '📱',
+        'dinheiro': '💵',
+        'cartao': '💳'
+    };
+    
+    const pagamentoTextos = {
+        'pix': 'PIX',
+        'dinheiro': 'Dinheiro',
+        'cartao': 'Cartão'
+    };
+    
+    mensagem += `${pagamentoIcons[formaPagamento]} *Pagamento:* ${pagamentoTextos[formaPagamento]}`;
+    
+    if (formaPagamento === 'pix' && CONFIG.pagamento.pix.chave) {
+        mensagem += `\n🔑 *Chave PIX:* ${CONFIG.pagamento.pix.chave}`;
+    } else if (formaPagamento === 'dinheiro') {
+        const precisaTroco = document.querySelector('input[name="precisa-troco"]:checked').value;
+        if (precisaTroco === 'sim') {
+            const valorTroco = document.getElementById('valor-troco').value;
+            mensagem += `\n💸 *Troco para:* R$ ${parseFloat(valorTroco).toFixed(2).replace('.', ',')}`;
+            const troco = parseFloat(valorTroco) - total;
+            mensagem += `\n↩️ *Troco:* R$ ${troco.toFixed(2).replace('.', ',')}`;
+        } else {
+            mensagem += `\n✅ *Não precisa de troco*`;
+        }
+    }
+    
+    if (observacoes) {
+        mensagem += `\n\n📝 *Observações:* ${observacoes}`;
+    }
+    
+    mensagem += `\n\n⏰ *Pedido realizado em:* ${new Date().toLocaleString('pt-BR')}`;
+    
+    const whatsappUrl = `https://wa.me/${CONFIG.configuracoes.numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Fechar modal e limpar carrinho
+    closeCheckoutModal();
+    carrinho = [];
+    atualizarCarrinho();
+    toggleCart(); // Fechar carrinho
+    
+    mostrarNotificacao('Pedido enviado com sucesso!', 'success');
+}
+
+function mostrarNotificacao(mensagem, tipo = 'success') {
+    // Criar elemento de notificação
+    const notificacao = document.createElement('div');
+    notificacao.className = `notification ${tipo}`;
+    notificacao.innerHTML = `
+        <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle'  : 'info-circle'}"></i>
+        <span>${mensagem}</span>
+    `;
+    
+    document.body.appendChild(notificacao);
+    
+    // Mostrar notificação
+    setTimeout(() => notificacao.classList.add('show'), 100);
+    
+    // Remover notificação após 3 segundos
+    setTimeout(() => {
+        notificacao.classList.remove('show');
+        setTimeout(() => {
+            if (document.body.contains(notificacao)) {
+                document.body.removeChild(notificacao);
+            }
+        }, 300);
+    }, 3000);
 }
 
 // Fechar modal ao clicar fora
